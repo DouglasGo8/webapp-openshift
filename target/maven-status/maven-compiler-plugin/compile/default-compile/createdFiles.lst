@@ -1,0 +1,3 @@
+com\rhel\openshift\webapp\GreetingApplication.class
+com\rhel\openshift\webapp\ExampleServlet.class
+com\rhel\openshift\webapp\GreetingResource.class

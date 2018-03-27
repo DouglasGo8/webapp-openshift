@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.rhel.openshift.webapp</groupId>
@@ -20,7 +23,7 @@
 
 
 
-    <docker.from>jboss/wildfly:10.0.0.Final</docker.from>
+    <docker.from>jboss/wildfly</docker.from>
     <fabric8.dockerUser>fabric8/</fabric8.dockerUser>
     <fabric8.image>${fabric8.dockerUser}${project.artifactId}:${project.version}</fabric8.image>
     <docker.assemblyDescriptorRef>artifact</docker.assemblyDescriptorRef>
@@ -93,6 +96,10 @@
               <name>${fabric8.image}</name>
               <build>
                 <from>${docker.from}</from>
+                <user>root</user>
+                <runCmds>
+                  <runCmd>chmod -R 777 /opt/jboss/wildfly</runCmd>
+                </runCmds>
                 <assembly>
                   <inline>
                     <dependencySets>
@@ -110,7 +117,7 @@
               </build>
             </image>
           </images>
-          <dockerHost>http://localhost:2375</dockerHost>
+          <dockerHost>tcp://localhost:2375</dockerHost>
         </configuration>
       </plugin>
       <plugin>
@@ -118,7 +125,6 @@
         <artifactId>fabric8-maven-plugin</artifactId>
         <version>${fabric8.version}</version>
         <executions>
-        <!--
           <execution>
             <id>json</id>
             <phase>generate-resources</phase>
@@ -126,7 +132,6 @@
               <goal>json</goal>
             </goals>
           </execution>
-          -->
           <execution>
             <id>attach</id>
             <phase>package</phase>
